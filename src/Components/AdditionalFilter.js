@@ -24,32 +24,79 @@ const Options = styled.div`
 `;
 
 const AdditionalFilter = props => {
+  /*
+    drop down array = [
+        Gender
+        Education
+        Border Crossing Frequency
+        Age
+        Country of Residence
+    ]
+    selected item "Gender"
+    
+    options array = ["Female", "Male"]
+
+    selected option = "Female"
+
+Most Requested Procedures Commodities
+most_requested_procedures_commodities
+
+catergories = name of the array that you can choose from in the drop down
+selector parts
+categories.selectedCategory = "gender"
+slectedCategory.option = "female"
+
+
+all options to show to the user
+
+x = { gender: [ male, female],
+countries: [ kenya, uganda]
+
+}
+
+Object is a js thing
+
+Object.keys(x) = [gender, countries]
+
+selectedCategory = gender
+
+options to show the user after they click on gender
+x[selectedCategory] = [male, female]
+
+selectedOption = female
+if (category) {
+  
+}
+
+    */
   let {
     FilterBoxOptions,
-
     filterBoxAdditionalFilter,
     setFilterBoxAdditionalFilter,
-
     filterBoxAdditionalFilterLabel,
     setFilterBoxAdditionalFilterLabel,
-
     filterBoxIndexLabel,
     filterBoxCrossLabel,
-
     graphLabels,
-
     loading,
-
     setAdditionalFilter,
     setCheckboxOptions,
     setSelectedCheckbox,
-
     searchOptions,
     setSearchOptions,
-
     searchCategories,
     setSearchCategories
   } = props;
+  console.log(
+    "input into component",
+    FilterBoxOptions,
+    filterBoxAdditionalFilter,
+    filterBoxAdditionalFilterLabel,
+    filterBoxIndexLabel,
+    filterBoxCrossLabel,
+    graphLabels,
+    loading
+  );
   // this will show a single selected category and 1 search option
   // searchOptions = ['Primary', 'KEN', 'Tubers']
   // searchCategories = ['Education Level',

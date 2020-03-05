@@ -6,7 +6,7 @@ import Navbar from "./Components/Navbar";
 import FilterBox from "./Components/FilterBox";
 import "react-dropdown/style.css";
 import { withRouter } from "react-router-dom";
-import Queries from "./Components/Queries";
+import Queries from "./Components/Queries2";
 
 const GraphContainer = () => {
   const [index, setIndex] = useState({ type: "gender", query: "Users" });
