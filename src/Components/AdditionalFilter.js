@@ -1,5 +1,60 @@
 import React from "react";
-const AdditionalFilter = () => {
+import Dropdown from "react-dropdown";
+
+import styled from "styled-components";
+
+const CheckboxContainer = styled.div`
+  max-height: 40vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  margin: 10px 0;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ccc;
+`;
+const FilterOption = styled.p`
+  margin-left: 0.5rem;
+  margin-top: 0.5rem;
+  font-size: 1rem;
+`;
+
+const Options = styled.div`
+  display: flex;
+  align-items: center;
+  font-weight: 400;
+`;
+
+const AdditionalFilter = props => {
+  let {
+    FilterBoxOptions,
+
+    filterBoxAdditionalFilter,
+    setFilterBoxAdditionalFilter,
+
+    filterBoxAdditionalFilterLabel,
+    setFilterBoxAdditionalFilterLabel,
+
+    filterBoxIndexLabel,
+    filterBoxCrossLabel,
+
+    graphLabels,
+
+    loading,
+
+    setAdditionalFilter,
+    setCheckboxOptions,
+    setSelectedCheckbox,
+
+    searchOptions,
+    setSearchOptions,
+
+    searchCategories,
+    setSearchCategories
+  } = props;
+  // this will show a single selected category and 1 search option
+  // searchOptions = ['Primary', 'KEN', 'Tubers']
+  // searchCategories = ['Education Level',
+  // 'country of residence',
+  // 'Most requested stuff']
   return (
     // <>
     <div>
@@ -21,15 +76,16 @@ const AdditionalFilter = () => {
         value={filterBoxAdditionalFilterLabel}
         placeholder="Select a filter..."
         onChange={e => {
+          console.log(e);
           setFilterBoxAdditionalFilter({
             type: e.value.type,
             query: e.value.query,
             label: e.label
           });
           setFilterBoxAdditionalFilterLabel(e.label);
-          props.setCheckboxOptions([]);
-          ClickTracker(e.value.type);
-          console.log("event", e);
+          setCheckboxOptions([]);
+          //   ClickTracker(e.value.type);
+          //   console.log("event", e);
         }}
       />
       <div
@@ -37,9 +93,9 @@ const AdditionalFilter = () => {
         onClick={() => {
           setFilterBoxAdditionalFilter({ type: "", query: "" });
           setFilterBoxAdditionalFilterLabel("");
-          props.setAdditionalFilter({ type: "", query: "" });
-          props.setCheckboxOptions([]);
-          props.setSelectedCheckbox({});
+          setAdditionalFilter({ type: "", query: "" });
+          setCheckboxOptions([]);
+          setSelectedCheckbox({});
         }}
       >
         <p>Clear Additional Filter</p>
@@ -58,10 +114,12 @@ const AdditionalFilter = () => {
                   name="CrossFilter"
                   value={option}
                   onChange={e => (
-                    props.setSelectedCheckbox({
+                    setSelectedCheckbox({
+                      // if this is a string then we could do this?
+                      // [ filterBoxAdditionalFilter.type ]
                       [`${filterBoxAdditionalFilter.type}`]: option
                     }),
-                    props.setAdditionalFilter(filterBoxAdditionalFilter)
+                    setAdditionalFilter(filterBoxAdditionalFilter)
                   )}
                 />
                 <FilterOption>{option}</FilterOption>
