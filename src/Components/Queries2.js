@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useQuery } from "@apollo/react-hooks";
 import { gql } from "apollo-boost";
 import Graph from "./Graph";
@@ -11,94 +11,195 @@ import removeMultiple from "../DataParseHelpers/removeMultiple";
 const GetData = props => {
   let queryType = "tradersUsers";
   let QUERY;
-  console.log(props.index.query, `props.index`);
-  console.log(props.crossFilter.query, `props.crossFilter`);
-  console.log(props.additionalFilter, `props.additionalFilter`);
+  console.log(props.index.type, `props.index`);
+  console.log(props.crossFilter.type, `props.crossFilter`);
+  console.log(props.additionalFilter.type, `props.additionalFilter`);
   console.log(props.selectedCheckbox, `props.selectedCheckbox`);
-  if (
-    props.index.query === "Users" &&
-    props.crossFilter.query === "Users" &&
-    !props.additionalFilter.type
-  ) {
-    queryType = "tradersUsers";
-    QUERY = gql`
-      query getUsers($queryTraders: newTraderInput){
-        tradersUsers (input: $queryTraders) {
-          ${props.index.type}
-          ${props.crossFilter.type}
-        }
-      }
-      `;
-  } else if (
-    props.index.query === "Sessions" &&
-    props.crossFilter.query === "Users" &&
-    !props.additionalFilter.type
-  ) {
-    queryType = "sessionsData";
-    QUERY = gql`
-      query getData($querySessionData: newTraderSessionInput){
-          sessionsData (input: $querySessionData){
-          ${props.index.type}
-          ${props.crossFilter.type}
-          created_date
-        }
-      }
-      `;
-  } else if (
-    props.index.query === "Users" &&
-    props.crossFilter.query === "Sessions" &&
-    !props.additionalFilter.type
-  ) {
-    queryType = "sessionsData";
-    QUERY = gql`
-      query getData($querySessionData: newTraderSessionInput){
-        sessionsData(input: $querySessionData){
-          ${props.index.type}
-          ${props.crossFilter.type}
-          created_date
-        }
-      }`;
-  } else if (
-    props.index.query === "Sessions" &&
-    props.crossFilter.query === "Sessions" &&
-    !props.additionalFilter.type
-  ) {
-    queryType = "sessionsData";
-    QUERY = gql`
-      query getData($querySessionData: newTraderSessionInput){
-        sessionsData (input: $querySessionData) {
-          ${props.index.type}
-          ${props.crossFilter.type}
-          created_date
-        }
-      }
-      `;
-  } else {
-    //making changes
-    //queryType = "tradersUsers";
-    //   QUERY = gql`
-    //     query getUsers($queryTraders: newTraderInput){
-    //       tradersUsers (input: $queryTraders) {
-    //         ${props.index.type}
-    //         ${props.crossFilter.type}
-    //       }
-    //     }
-    //     additionalFilterData: sessionsData{
-    //         ${props.additionalFilter.type}
-    //     }
-    //   }
-    //   `;
-    queryType = "tradersUsers";
-    QUERY = gql`
-      query getUsers($queryTraders: newTraderInput) {
-        tradersUsers(input: { language: "Swahili" }) {
-          education
-          age
-          language
-        }
-      }
-    `;
-  }
+
+  //   if (
+  //     props.index.query === "Users" &&
+  //     props.crossFilter.query === "Users" &&
+  //     !props.additionalFilter.type
+  //   ) {
+  // queryType = "tradersUsers";
+  // QUERY = gql`
+  //   query getUsers($queryTraders: newTraderInput) {
+  //     tradersUsers(input: $queryTraders) {
+  //       ${props.index.type}
+  //       ${props.crossFilter.type}
+  //       ${props.additionalFilter.type}
+  //     }
+  //   }
+  // `;
+  queryType = "tradersUsers";
+  QUERY = gql`
+       query getUsers( 
+         $age: String,
+         $gender: String, 
+         $education: String 
+         $crossing_freq: String,
+         $produce: String,
+         $primary_income: String,
+         $language: String,
+         $country_of_residence: String,
+         ){
+         tradersUsers (
+           age: $age,
+           gender: $gender, 
+           education: $education
+           crossing_freq: $crossing_freq,
+           produce: $produce,
+           primary_income: $primary_income,
+           language: $language,
+           country_of_residence: $country_of_residence
+           ) {
+           ${props.index.type}
+           ${props.crossFilter.type}
+         }
+       }
+       `;
+  //  } else if (
+  //    props.index.query === "Sessions" &&
+  //    props.crossFilter.query === "Users" &&
+  //    !props.additionalFilter.type
+  //  ) {
+  //    queryType = "sessionsData";
+
+  //    QUERY = gql`
+  //      query getData(
+  //        $age: String,
+  //        $gender: String,
+  //        $education: String,
+  //        $crossing_freq: String,
+  //        $produce: String,
+  //        $primary_income: String,
+  //        $language: String,
+  //        $country_of_residence: String,
+  //        $procedurecommodity: String,
+  //        $procedurecommoditycat: String,
+  //        $proceduredest: String,
+  //        $procedurerequireddocument: String,
+  //        $procedurerelevantagency: String,
+  //        $procedureorigin: String,
+  //        $commoditycountry: String,
+  //        $commoditymarket: String,
+  //        $commodityproduct: String,
+  //        $commoditycat: String,
+  //        $exchangedirection: String,
+  //        ){
+  //          sessionsData(
+  //          age: $age,
+  //          gender: $gender,
+  //          education: $education,
+  //          crossing_freq: $crossing_freq,
+  //          produce: $produce,
+  //          primary_income: $primary_income,
+  //          language: $language,
+  //          country_of_residence: $country_of_residence,
+  //          procedurecommodity: $procedurecommodity,
+  //          procedurecommoditycat: $procedurecommoditycat,
+  //          proceduredest: $proceduredest,
+  //          procedurerequireddocument: $procedurerequireddocument,
+  //          procedurerelevantagency: $procedurerelevantagency,
+  //          procedureorigin: $procedureorigin,
+  //          commoditycountry: $commoditycountry,
+  //          commoditymarket: $commoditymarket,
+  //          commodityproduct: $commodityproduct,
+  //          commoditycat: $commoditycat,
+  //          exchangedirection: $exchangedirection,
+  //          ){
+  //          ${props.index.type}
+  //          ${props.crossFilter.type}
+  //          created_date
+  //        }
+  //      }
+  //      `;
+
+  // let {loading, data} = useQuery(QUERY, {
+  //   variables:{queryTraders: {language : "Swahili"}},
+  //   fetchPolicy: policyType
+  // });
+
+  // if (data){console.log(`returned data`, data.tradersUsers);}
+  //     queryType = "tradersUsers";
+  //     QUERY = gql`
+  //       query getUsers($queryTraders: newTraderInput){
+  //         tradersUsers (input: $queryTraders) {
+  //           ${props.index.type}
+  //           ${props.crossFilter.type}
+  //         }
+  //       }
+  //       `;
+  //   } else if (
+  //     props.index.query === "Sessions" &&
+  //     props.crossFilter.query === "Users" &&
+  //     !props.additionalFilter.type
+  //   ) {
+  //     queryType = "sessionsData";
+  //     QUERY = gql`
+  //       query getData($querySessionData: newTraderSessionInput){
+  //           sessionsData (input: $querySessionData){
+  //           ${props.index.type}
+  //           ${props.crossFilter.type}
+  //           created_date
+  //         }
+  //       }
+  //       `;
+  //   } else if (
+  //     props.index.query === "Users" &&
+  //     props.crossFilter.query === "Sessions" &&
+  //     !props.additionalFilter.type
+  //   ) {
+  //     queryType = "sessionsData";
+  //     QUERY = gql`
+  //       query getData($querySessionData: newTraderSessionInput){
+  //         sessionsData(input: $querySessionData){
+  //           ${props.index.type}
+  //           ${props.crossFilter.type}
+  //           created_date
+  //         }
+  //       }`;
+  //   } else if (
+  //     props.index.query === "Sessions" &&
+  //     props.crossFilter.query === "Sessions" &&
+  //     !props.additionalFilter.type
+  //   ) {
+  //     queryType = "sessionsData";
+  //     QUERY = gql`
+  //       query getData($querySessionData: newTraderSessionInput){
+  //         sessionsData (input: $querySessionData) {
+  //           ${props.index.type}
+  //           ${props.crossFilter.type}
+  //           created_date
+  //         }
+  //       }
+  //       `;
+  //   } else {
+  //making changes
+  //queryType = "tradersUsers";
+  //   QUERY = gql`
+  //     query getUsers($queryTraders: newTraderInput){
+  //       tradersUsers (input: $queryTraders) {
+  //         ${props.index.type}
+  //         ${props.crossFilter.type}
+  //       }
+  //     }
+  //     additionalFilterData: sessionsData{
+  //         ${props.additionalFilter.type}
+  //     }
+  //   }
+  //   `;
+  // queryType = "tradersUsers";
+  // QUERY = gql`
+  //   query getUsers($queryTraders: newTraderInput) {
+  //     tradersUsers(input: $queryTraders) {
+  //       education
+  //       age
+  //       language
+  //     }
+  //   }
+  // `;
+  //   }
 
   console.log(props.additionalFilter.type);
 
@@ -111,12 +212,43 @@ const GetData = props => {
   } else {
     policyType = "network-only";
   }
+  console.log(props.selectedCheckbox);
+  //props.selectedCheckbox = {language : "Swahili"}
 
-  let { loading, data } = useQuery(QUERY, {
-    variables: { ...props.selectedCheckbox },
+  //const selectedbox = props.selectedCheckbox
+  // const {selectedCheckbox} = props
+  // console.log(selectedCheckbox)
+  // console.log(Object.values(props.selectedCheckbox))
+  // console.log(Object.keys(props.selectedCheckbox))
+
+  // let selectedbox = {queryTraders: props.selectedCheckbox }
+
+  // if (props.selectedCheckbox !== {}) selectedbox = props.selectedCheckbox;
+  // console.log(selectedbox)
+
+  //console.log(noQuotes.replace(/['"]+/g, ''))
+
+  // let { loading, data } = useQuery(QUERY, {
+  //   variables:{queryTraders: {var1 : newA }},
+  //   fetchPolicy: policyType
+  // });
+
+  //primaryFilter = {queryTraders : }
+
+  // console.log(primaryFilter)
+  //{queryTraders :  || {language:"Swahili"}}
+
+  const { selectedCheckbox } = props;
+  console.log(selectedCheckbox);
+
+  var { loading, data } = useQuery(QUERY, {
+    variables: { queryTraders: { language: "Swahili" } },
     fetchPolicy: policyType
   });
-  console.log(`returned data`, data);
+
+  if (data) {
+    console.log(`returned data`, data.tradersUsers);
+  }
 
   if (loading) {
     return (
