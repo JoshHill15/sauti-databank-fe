@@ -4,7 +4,7 @@ import Dropdown from "react-dropdown";
 import styled from "styled-components";
 import { connect } from "react-redux";
 
-import { getCat } from "../filterActions";
+import { getCat, loadOneMoreFilter } from "../filterActions";
 
 const CheckboxContainer = styled.div`
   max-height: 40vh;
@@ -273,4 +273,6 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, { getCat })(AdditionalFilter);
+export default connect(mapStateToProps, { getCat, loadOneMoreFilter })(
+  AdditionalFilter
+);

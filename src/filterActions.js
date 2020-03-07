@@ -40,3 +40,10 @@ export const getCat = i => dispatch => {
       });
     });
 };
+
+export const loadOneMoreFilter = () => dispatch => {
+  console.log("we are here");
+  dispatch({
+    type: ["catTree", "LOAD_ONE_MORE_FILTER", "0"]
+  });
+};

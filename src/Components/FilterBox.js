@@ -11,7 +11,7 @@ import AdditionalFilter from "./AdditionalFilter";
 import CalendarModal from "../dashboard/CalendarModal";
 import { connect } from "react-redux";
 
-import { getCat } from "../filterActions";
+import { getCat, loadOneMoreFilter } from "../filterActions";
 
 import { decodeToken, getToken } from "../dashboard/auth/Auth";
 
@@ -140,37 +140,37 @@ function FilterBox(props) {
   const [selectedNames, setSelectedNames] = useState([]);
   const [ithComponent, setIthComponent] = useState(0);
   const [reloadFilters, setReloadFilters] = useState(false);
-  const [additionalFilters, setAdditionalFilters] = useState(
-    [null, null, null].map((slot, i) => {
-      return (
-        <AdditionalFilter
-          FilterBoxOptions={FilterBoxOptions}
-          filterBoxAdditionalFilter={filterBoxAdditionalFilter}
-          setFilterBoxAdditionalFilter={setFilterBoxAdditionalFilter}
-          filterBoxAdditionalFilterLabel={filterBoxAdditionalFilterLabel}
-          setFilterBoxAdditionalFilterLabel={setFilterBoxAdditionalFilterLabel}
-          filterBoxIndexLabel={filterBoxIndexLabel}
-          filterBoxCrossLabel={filterBoxCrossLabel}
-          graphLabels={graphLabels}
-          loading={loading}
-          setAdditionalFilter={props.setAdditionalFilter}
-          setCheckboxOptions={props.setCheckboxOptions}
-          setSelectedCheckbox={props.setSelectedCheckbox}
-          searchOptions={searchOptions}
-          setSearchOptions={setSearchOptions}
-          searchCategories={searchCategories}
-          setSearchCategories={setSearchCategories}
-          categories={categories}
-          setCategories={setCategories}
-          selectedNames={selectedNames}
-          setSelectedNames={setSelectedNames}
-          ithComponent={ithComponent}
-          setIthComponent={setIthComponent}
-          i={i}
-        />
-      );
-    })
-  );
+  // const [additionalFilters, setAdditionalFilters] = useState(
+  //   [null, null, null].map((slot, i) => {
+  //     return (
+  //       <AdditionalFilter
+  //         FilterBoxOptions={FilterBoxOptions}
+  //         filterBoxAdditionalFilter={filterBoxAdditionalFilter}
+  //         setFilterBoxAdditionalFilter={setFilterBoxAdditionalFilter}
+  //         filterBoxAdditionalFilterLabel={filterBoxAdditionalFilterLabel}
+  //         setFilterBoxAdditionalFilterLabel={setFilterBoxAdditionalFilterLabel}
+  //         filterBoxIndexLabel={filterBoxIndexLabel}
+  //         filterBoxCrossLabel={filterBoxCrossLabel}
+  //         graphLabels={graphLabels}
+  //         loading={loading}
+  //         setAdditionalFilter={props.setAdditionalFilter}
+  //         setCheckboxOptions={props.setCheckboxOptions}
+  //         setSelectedCheckbox={props.setSelectedCheckbox}
+  //         searchOptions={searchOptions}
+  //         setSearchOptions={setSearchOptions}
+  //         searchCategories={searchCategories}
+  //         setSearchCategories={setSearchCategories}
+  //         categories={categories}
+  //         setCategories={setCategories}
+  //         selectedNames={selectedNames}
+  //         setSelectedNames={setSelectedNames}
+  //         ithComponent={ithComponent}
+  //         setIthComponent={setIthComponent}
+  //         i={i}
+  //       />
+  //     );
+  //   })
+  // );
   useEffect(() => {
     if (
       !graphLabels[`${filterBoxAdditionalFilter.type}`] &&
@@ -229,44 +229,46 @@ function FilterBox(props) {
       {/* <> */}
       {/* could modifyng the items in their slots work if I knew exactly how many filters were active? */}
       {/* if I'm in 1 component, can I know how many are active? */}
-      {additionalFilters.map(x => x)}
-      {/* <div onClick={(e) => {
-        x = [...x,
+      {/* {additionalFilters.map(x => x)} */}
+      {Object.keys(props.filters).map((filterId, i) => {
+        return (
           <AdditionalFilter
-          FilterBoxOptions={FilterBoxOptions}
-          filterBoxAdditionalFilter={filterBoxAdditionalFilter}
-          setFilterBoxAdditionalFilter={setFilterBoxAdditionalFilter}
-          filterBoxAdditionalFilterLabel={filterBoxAdditionalFilterLabel}
-          setFilterBoxAdditionalFilterLabel={setFilterBoxAdditionalFilterLabel}
-          filterBoxIndexLabel={filterBoxIndexLabel}
-          filterBoxCrossLabel={filterBoxCrossLabel}
-          graphLabels={graphLabels}
-          loading={loading}
-          setAdditionalFilter={props.setAdditionalFilter}
-          setCheckboxOptions={props.setCheckboxOptions}
-          setSelectedCheckbox={props.setSelectedCheckbox}
-          searchOptions={searchOptions}
-          setSearchOptions={setSearchOptions}
-          searchCategories={searchCategories}
-          setSearchCategories={setSearchCategories}
-          categories={categories}
-          setCategories={setCategories}
-          selectedNames={selectedNames}
-          setSelectedNames={setSelectedNames}
-          ithComponent={ithComponent}
-          setIthComponent={setIthComponent}
-        />]
-        console.log(x.length)
-        if(reloadFilters === false) {
-          setReloadFilters(true)
-
-        } else {
-          setReloadFilters(false)
-
-        }
-      }}>
+            FilterBoxOptions={FilterBoxOptions}
+            filterBoxAdditionalFilter={filterBoxAdditionalFilter}
+            setFilterBoxAdditionalFilter={setFilterBoxAdditionalFilter}
+            filterBoxAdditionalFilterLabel={filterBoxAdditionalFilterLabel}
+            setFilterBoxAdditionalFilterLabel={
+              setFilterBoxAdditionalFilterLabel
+            }
+            filterBoxIndexLabel={filterBoxIndexLabel}
+            filterBoxCrossLabel={filterBoxCrossLabel}
+            graphLabels={graphLabels}
+            loading={loading}
+            setAdditionalFilter={props.setAdditionalFilter}
+            setCheckboxOptions={props.setCheckboxOptions}
+            setSelectedCheckbox={props.setSelectedCheckbox}
+            searchOptions={searchOptions}
+            setSearchOptions={setSearchOptions}
+            searchCategories={searchCategories}
+            setSearchCategories={setSearchCategories}
+            categories={categories}
+            setCategories={setCategories}
+            selectedNames={selectedNames}
+            setSelectedNames={setSelectedNames}
+            ithComponent={ithComponent}
+            setIthComponent={setIthComponent}
+            i={i}
+          />
+        );
+      })}
+      <div
+        onClick={e => {
+          props.loadOneMoreFilter();
+          console.log("got here");
+        }}
+      >
         add an additional filter
-      </div> */}
+      </div>
       {/* <AdditionalFilter
         FilterBoxOptions={FilterBoxOptions}
         filterBoxAdditionalFilter={filterBoxAdditionalFilter}
@@ -711,4 +713,6 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, { getCat })(FilterBox);
+export default connect(mapStateToProps, { getCat, loadOneMoreFilter })(
+  FilterBox
+);

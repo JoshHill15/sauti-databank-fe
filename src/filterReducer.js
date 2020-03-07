@@ -1,3 +1,17 @@
+// import { loadOneMoreFilter } from "./filterActions";
+
+export const loadOneMoreFilterReducer = (state, action) => {
+  return {
+    ...state,
+    catTree: {
+      ...state.catTree,
+      filters: {
+        ...state.catTree.filters,
+        [Object.keys(state.catTree.filters).length]: { selectedName: "" }
+      }
+    }
+  };
+};
 export const fetchCatStart = (state, action) => {
   return { ...state, catTree: { ...state.catTree, isFetching: true } };
 };
@@ -54,6 +68,11 @@ export const Cat = {
       next: { "0": {} },
       children: { "0": { char: "0" } },
       functions: { "0": fetchCatFailure }
+    },
+    LOAD_ONE_MORE_FILTER: {
+      next: { "0": {} },
+      children: { "0": { char: "0" } },
+      functions: { "0": loadOneMoreFilterReducer }
     }
   },
   array: ["0", "1", "2", "3", "4"],
