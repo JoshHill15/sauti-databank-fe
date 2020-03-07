@@ -45,7 +45,7 @@ const GraphContainer = () => {
           <h1>Informal Cross-Border Trade Data</h1>
         </div>
         <div className="content-container">
-          <div className="chart-container">
+          {/* <div className="chart-container">
             <Queries
               index={index}
               crossFilter={crossFilter}
@@ -58,7 +58,7 @@ const GraphContainer = () => {
               startDate={startDate}
               endDate={endDate}
             />
-          </div>
+          </div> */}
 
           <div className="dropdown-container">
             <FilterBox

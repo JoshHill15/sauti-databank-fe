@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import Dropdown from "react-dropdown";
 
 import styled from "styled-components";
+import { connect } from "react-redux";
+
+import { getCat } from "../filterActions";
 
 const CheckboxContainer = styled.div`
   max-height: 40vh;
@@ -65,10 +68,15 @@ x[selectedCategory] = [male, female]
 
 selectedOption = female
 if (category) {
-  
+  filter out selectedCategory from x
 }
 
+
+
+
+
     */
+
   let {
     FilterBoxOptions,
     filterBoxAdditionalFilter,
@@ -85,23 +93,40 @@ if (category) {
     searchOptions,
     setSearchOptions,
     searchCategories,
-    setSearchCategories
+    setSearchCategories,
+
+    categories,
+    setCategories,
+
+    selectedNames,
+    setSelectedNames,
+    ithComponent,
+    setIthComponent,
+    i
   } = props;
-  console.log(
-    "input into component",
-    FilterBoxOptions,
-    filterBoxAdditionalFilter,
-    filterBoxAdditionalFilterLabel,
-    filterBoxIndexLabel,
-    filterBoxCrossLabel,
-    graphLabels,
-    loading
-  );
+
+  //   console.log(
+  //     "input into component",
+  //     FilterBoxOptions,
+  //     filterBoxAdditionalFilter,
+  //     filterBoxAdditionalFilterLabel,
+  //     filterBoxIndexLabel,
+  //     filterBoxCrossLabel,
+  //     graphLabels,
+  //     loading)
   // this will show a single selected category and 1 search option
   // searchOptions = ['Primary', 'KEN', 'Tubers']
   // searchCategories = ['Education Level',
   // 'country of residence',
   // 'Most requested stuff']
+  // each filter maps to an id
+  //   each id maps to the data being held for that filter
+  //
+  console.log("entering component", selectedNames);
+  console.log(categories);
+  const [showNames, setShowNames] = useState(Object.keys(categories));
+  console.log(showNames);
+  const [selectedName, setSelectedName] = useState("");
   return (
     // <>
     <div>
@@ -111,27 +136,69 @@ if (category) {
           *This optional filter adjusts samplesize and may not always alter the
           graph appearance.
         </p>
+        <p>{props.cat}</p>
         <Dropdown
           controlClassName="myControlClassName"
           arrowClassName="myArrowClassName"
           className="dropdown"
           disabled={loading}
-          options={FilterBoxOptions.default.filter(
-            obj =>
-              obj.label !== filterBoxIndexLabel &&
-              obj.label !== filterBoxCrossLabel
-          )}
-          value={filterBoxAdditionalFilterLabel}
+          options={
+            props.array.filter(
+              option =>
+                !Object.keys(props.filters)
+                  .map(filterId => props.filters[filterId].selectedName)
+                  .includes(option)
+            )
+            //   props.array.filter(option => props.filters[i].selectedName !== option)
+            //   props.array.filter(name => name !== "1")
+            //   showNames.filter(name => selectedNames.length === 0 ?
+            //         name !== selectedName :
+            //         !selectedNames.includes(name)
+            // )
+            //       FilterBoxOptions.default.filter(
+            //     obj =>
+            //       obj.label !== filterBoxIndexLabel &&
+            //       obj.label !== filterBoxCrossLabel
+            //   )
+          }
+          value={
+            props.filters[i].selectedName
+            // selectedName
+            //   filterBoxAdditionalFilterLabel
+          }
           placeholder="Select a filter..."
           onChange={e => {
-            console.log(e);
-            setFilterBoxAdditionalFilter({
-              type: e.value.type,
-              query: e.value.query,
-              label: e.label
+            console.log(
+              "event",
+              e,
+              showNames.filter(name => name !== e.value)
+            );
+            props.getCat(i);
+            setSelectedName(e.value);
+            setSelectedNames([...selectedNames, e.value]);
+
+            // the value isn't changed for this round
+            let newCategories = {};
+            Object.keys(categories).forEach(category => {
+              console.log(category, e.value);
+              if (category !== e.value) {
+                newCategories = {
+                  ...newCategories,
+                  [category]: categories[category]
+                };
+              }
             });
-            setFilterBoxAdditionalFilterLabel(e.label);
-            setCheckboxOptions([]);
+            console.log("new categories", newCategories, "|", e.value, "|");
+            setCategories(newCategories);
+            console.log("new categories", newCategories, categories);
+
+            // setFilterBoxAdditionalFilter({
+            //   type: e.value.type,
+            //   query: e.value.query,
+            //   label: e.label
+            // });
+            // setFilterBoxAdditionalFilterLabel(e.label);
+            // setCheckboxOptions([]);
             //   ClickTracker(e.value.type);
             //   console.log("event", e);
           }}
@@ -139,11 +206,14 @@ if (category) {
         <div
           className="reset-btn"
           onClick={() => {
-            setFilterBoxAdditionalFilter({ type: "", query: "" });
-            setFilterBoxAdditionalFilterLabel("");
-            setAdditionalFilter({ type: "", query: "" });
-            setCheckboxOptions([]);
-            setSelectedCheckbox({});
+            console.log(selectedName);
+
+            setSelectedName("");
+            // setFilterBoxAdditionalFilter({ type: "", query: "" });
+            // setFilterBoxAdditionalFilterLabel("");
+            // setAdditionalFilter({ type: "", query: "" });
+            // setCheckboxOptions([]);
+            // setSelectedCheckbox({});
           }}
         >
           <p>Clear Additional Filter</p>
@@ -151,7 +221,11 @@ if (category) {
         {/* </> */}
         {/* )} */}
 
-        {graphLabels[`${filterBoxAdditionalFilter.type}`] && (
+        <CheckboxContainer>
+          <p>Select an option to further filter the data: </p>
+          {}
+        </CheckboxContainer>
+        {/* {graphLabels[`${filterBoxAdditionalFilter.type}`] && (
           <CheckboxContainer>
             <p>Select an option to further filter the data: </p>
             {graphLabels[`${filterBoxAdditionalFilter.type}`].labels.map(
@@ -175,10 +249,28 @@ if (category) {
               )
             )}
           </CheckboxContainer>
-        )}
+        )} */}
       </form>
+      <div
+        onClick={e => {
+          console.log();
+        }}
+      >
+        check status of redux
+      </div>
     </div>
   );
 };
 
-export default AdditionalFilter;
+// export default AdditionalFilter;
+const mapStateToProps = state => {
+  return {
+    error: state.catTree.error,
+    isFetching: state.catTree.isFetching,
+    cat: state.catTree.cat,
+    array: state.catTree.array,
+    filters: state.catTree.filters
+  };
+};
+
+export default connect(mapStateToProps, { getCat })(AdditionalFilter);

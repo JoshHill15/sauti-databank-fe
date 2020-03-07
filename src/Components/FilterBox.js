@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
+
 import "../App.scss";
 import ReactGa from "react-ga";
 import styled from "styled-components";
@@ -8,10 +9,13 @@ import graphLabels from "./graphLabels";
 import Loader from "react-loader-spinner";
 import AdditionalFilter from "./AdditionalFilter";
 import CalendarModal from "../dashboard/CalendarModal";
+import { connect } from "react-redux";
+
+import { getCat } from "../filterActions";
 
 import { decodeToken, getToken } from "../dashboard/auth/Auth";
 
-export default function FilterBox(props) {
+function FilterBox(props) {
   const token = getToken();
   let tier;
   if (token) {
@@ -93,6 +97,80 @@ export default function FilterBox(props) {
     ]
   );
 
+  const [categories, setCategories] = useState({
+    "Education Level": {
+      options: [
+        "University/College",
+        "Secondary",
+        "Primary",
+        "No formal education"
+      ],
+      searchName: "education"
+    },
+    Gender: {
+      options: ["Female", "Male"],
+      searchName: "gender"
+    },
+    "Border Crossing Frequency": {
+      options: ["Monthly", "Weekly", "Daily", "Never"],
+      searchName: "crossing_freq"
+    },
+    Age: {
+      options: ["60-70", "50-60", "40-50", "30-40", "20-30", "10-20"],
+      searchName: "age"
+    },
+    "Country of Residence": {
+      options: ["RWA", "UGA", "KEN", "TZA"],
+      searchName: "country_of_residence"
+    },
+    "Primary Income": {
+      options: ["No", "Yes"],
+      searchName: "primary_income"
+    },
+    Language: {
+      options: ["Lukiga", "Kinyarwanda", "Luganda", "Swahili", "English"],
+      searchName: "language"
+    },
+    Produce: {
+      options: ["No", "Yes"],
+      searchName: "produce"
+    }
+  });
+
+  const [selectedNames, setSelectedNames] = useState([]);
+  const [ithComponent, setIthComponent] = useState(0);
+  const [reloadFilters, setReloadFilters] = useState(false);
+  const [additionalFilters, setAdditionalFilters] = useState(
+    [null, null, null].map((slot, i) => {
+      return (
+        <AdditionalFilter
+          FilterBoxOptions={FilterBoxOptions}
+          filterBoxAdditionalFilter={filterBoxAdditionalFilter}
+          setFilterBoxAdditionalFilter={setFilterBoxAdditionalFilter}
+          filterBoxAdditionalFilterLabel={filterBoxAdditionalFilterLabel}
+          setFilterBoxAdditionalFilterLabel={setFilterBoxAdditionalFilterLabel}
+          filterBoxIndexLabel={filterBoxIndexLabel}
+          filterBoxCrossLabel={filterBoxCrossLabel}
+          graphLabels={graphLabels}
+          loading={loading}
+          setAdditionalFilter={props.setAdditionalFilter}
+          setCheckboxOptions={props.setCheckboxOptions}
+          setSelectedCheckbox={props.setSelectedCheckbox}
+          searchOptions={searchOptions}
+          setSearchOptions={setSearchOptions}
+          searchCategories={searchCategories}
+          setSearchCategories={setSearchCategories}
+          categories={categories}
+          setCategories={setCategories}
+          selectedNames={selectedNames}
+          setSelectedNames={setSelectedNames}
+          ithComponent={ithComponent}
+          setIthComponent={setIthComponent}
+          i={i}
+        />
+      );
+    })
+  );
   useEffect(() => {
     if (
       !graphLabels[`${filterBoxAdditionalFilter.type}`] &&
@@ -149,7 +227,121 @@ export default function FilterBox(props) {
           }}
         /> */}
       {/* <> */}
+      {/* could modifyng the items in their slots work if I knew exactly how many filters were active? */}
+      {/* if I'm in 1 component, can I know how many are active? */}
+      {additionalFilters.map(x => x)}
+      {/* <div onClick={(e) => {
+        x = [...x,
+          <AdditionalFilter
+          FilterBoxOptions={FilterBoxOptions}
+          filterBoxAdditionalFilter={filterBoxAdditionalFilter}
+          setFilterBoxAdditionalFilter={setFilterBoxAdditionalFilter}
+          filterBoxAdditionalFilterLabel={filterBoxAdditionalFilterLabel}
+          setFilterBoxAdditionalFilterLabel={setFilterBoxAdditionalFilterLabel}
+          filterBoxIndexLabel={filterBoxIndexLabel}
+          filterBoxCrossLabel={filterBoxCrossLabel}
+          graphLabels={graphLabels}
+          loading={loading}
+          setAdditionalFilter={props.setAdditionalFilter}
+          setCheckboxOptions={props.setCheckboxOptions}
+          setSelectedCheckbox={props.setSelectedCheckbox}
+          searchOptions={searchOptions}
+          setSearchOptions={setSearchOptions}
+          searchCategories={searchCategories}
+          setSearchCategories={setSearchCategories}
+          categories={categories}
+          setCategories={setCategories}
+          selectedNames={selectedNames}
+          setSelectedNames={setSelectedNames}
+          ithComponent={ithComponent}
+          setIthComponent={setIthComponent}
+        />]
+        console.log(x.length)
+        if(reloadFilters === false) {
+          setReloadFilters(true)
+
+        } else {
+          setReloadFilters(false)
+
+        }
+      }}>
+        add an additional filter
+      </div> */}
+      {/* <AdditionalFilter
+        FilterBoxOptions={FilterBoxOptions}
+        filterBoxAdditionalFilter={filterBoxAdditionalFilter}
+        setFilterBoxAdditionalFilter={setFilterBoxAdditionalFilter}
+        filterBoxAdditionalFilterLabel={filterBoxAdditionalFilterLabel}
+        setFilterBoxAdditionalFilterLabel={setFilterBoxAdditionalFilterLabel}
+        filterBoxIndexLabel={filterBoxIndexLabel}
+        filterBoxCrossLabel={filterBoxCrossLabel}
+        graphLabels={graphLabels}
+        loading={loading}
+        setAdditionalFilter={props.setAdditionalFilter}
+        setCheckboxOptions={props.setCheckboxOptions}
+        setSelectedCheckbox={props.setSelectedCheckbox}
+        searchOptions={searchOptions}
+        setSearchOptions={setSearchOptions}
+        searchCategories={searchCategories}
+        setSearchCategories={setSearchCategories}
+        categories={categories}
+        setCategories={setCategories}
+        selectedNames={selectedNames}
+        setSelectedNames={setSelectedNames}
+        ithComponent={ithComponent}
+        setIthComponent={setIthComponent}
+      />
       <AdditionalFilter
+        FilterBoxOptions={FilterBoxOptions}
+        filterBoxAdditionalFilter={filterBoxAdditionalFilter}
+        setFilterBoxAdditionalFilter={setFilterBoxAdditionalFilter}
+        filterBoxAdditionalFilterLabel={filterBoxAdditionalFilterLabel}
+        setFilterBoxAdditionalFilterLabel={setFilterBoxAdditionalFilterLabel}
+        filterBoxIndexLabel={filterBoxIndexLabel}
+        filterBoxCrossLabel={filterBoxCrossLabel}
+        graphLabels={graphLabels}
+        loading={loading}
+        setAdditionalFilter={props.setAdditionalFilter}
+        setCheckboxOptions={props.setCheckboxOptions}
+        setSelectedCheckbox={props.setSelectedCheckbox}
+        searchOptions={searchOptions}
+        setSearchOptions={setSearchOptions}
+        searchCategories={searchCategories}
+        setSearchCategories={setSearchCategories}
+        categories={categories}
+        setCategories={setCategories}
+
+        selectedNames={selectedNames}
+        setSelectedNames={setSelectedNames}
+        ithComponent={ithComponent}
+        setIthComponent={setIthComponent}
+      />
+      <AdditionalFilter
+        FilterBoxOptions={FilterBoxOptions}
+        filterBoxAdditionalFilter={filterBoxAdditionalFilter}
+        setFilterBoxAdditionalFilter={setFilterBoxAdditionalFilter}
+        filterBoxAdditionalFilterLabel={filterBoxAdditionalFilterLabel}
+        setFilterBoxAdditionalFilterLabel={setFilterBoxAdditionalFilterLabel}
+        filterBoxIndexLabel={filterBoxIndexLabel}
+        filterBoxCrossLabel={filterBoxCrossLabel}
+        graphLabels={graphLabels}
+        loading={loading}
+        setAdditionalFilter={props.setAdditionalFilter}
+        setCheckboxOptions={props.setCheckboxOptions}
+        setSelectedCheckbox={props.setSelectedCheckbox}
+        searchOptions={searchOptions}
+        setSearchOptions={setSearchOptions}
+        searchCategories={searchCategories}
+        setSearchCategories={setSearchCategories}
+        categories={categories}
+        setCategories={setCategories}
+
+        selectedNames={selectedNames}
+        setSelectedNames={setSelectedNames}
+        ithComponent={ithComponent}
+        setIthComponent={setIthComponent}
+      /> */}
+      {/* <AdditionalFilter
         FilterBoxOptions={FilterBoxOptions}
         filterBoxAdditionalFilter={filterBoxAdditionalFilter}
         setFilterBoxAdditionalFilter={setFilterBoxAdditionalFilter}
@@ -184,25 +376,7 @@ export default function FilterBox(props) {
         setSearchOptions={setSearchOptions}
         searchCategories={searchCategories}
         setSearchCategories={setSearchCategories}
-      />
-      <AdditionalFilter
-        FilterBoxOptions={FilterBoxOptions}
-        filterBoxAdditionalFilter={filterBoxAdditionalFilter}
-        setFilterBoxAdditionalFilter={setFilterBoxAdditionalFilter}
-        filterBoxAdditionalFilterLabel={filterBoxAdditionalFilterLabel}
-        setFilterBoxAdditionalFilterLabel={setFilterBoxAdditionalFilterLabel}
-        filterBoxIndexLabel={filterBoxIndexLabel}
-        filterBoxCrossLabel={filterBoxCrossLabel}
-        graphLabels={graphLabels}
-        loading={loading}
-        setAdditionalFilter={props.setAdditionalFilter}
-        setCheckboxOptions={props.setCheckboxOptions}
-        setSelectedCheckbox={props.setSelectedCheckbox}
-        searchOptions={searchOptions}
-        setSearchOptions={setSearchOptions}
-        searchCategories={searchCategories}
-        setSearchCategories={setSearchCategories}
-      />
+      /> */}
       {/* </> */}
       {/* <> */}
       {/* <p>Additional Filter</p>
@@ -526,3 +700,15 @@ const DropdownContainer = styled.div`
     justify-content: space-between;
   }
 `;
+
+const mapStateToProps = state => {
+  return {
+    error: state.catTree.error,
+    isFetching: state.catTree.isFetching,
+    cat: state.catTree.cat,
+    array: state.catTree.array,
+    filters: state.catTree.filters
+  };
+};
+
+export default connect(mapStateToProps, { getCat })(FilterBox);
