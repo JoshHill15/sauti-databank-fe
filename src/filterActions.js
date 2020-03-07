@@ -47,3 +47,12 @@ export const loadOneMoreFilter = () => dispatch => {
     type: ["catTree", "LOAD_ONE_MORE_FILTER", "0"]
   });
 };
+
+export const selectCategory = (category, i) => dispatch => {
+  console.log(category);
+
+  dispatch({
+    type: ["catTree", "SELECT_CATEGORY", "0"],
+    payload: { category: category, i: i }
+  });
+};

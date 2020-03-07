@@ -4,7 +4,7 @@ import Dropdown from "react-dropdown";
 import styled from "styled-components";
 import { connect } from "react-redux";
 
-import { getCat, loadOneMoreFilter } from "../filterActions";
+import { getCat, loadOneMoreFilter, selectCategory } from "../filterActions";
 
 const CheckboxContainer = styled.div`
   max-height: 40vh;
@@ -173,14 +173,15 @@ if (category) {
               e,
               showNames.filter(name => name !== e.value)
             );
-            props.getCat(i);
+            // props.getCat(i);
+            props.selectCategory(e.value, i);
             setSelectedName(e.value);
             setSelectedNames([...selectedNames, e.value]);
 
             // the value isn't changed for this round
             let newCategories = {};
             Object.keys(categories).forEach(category => {
-              console.log(category, e.value);
+              //   console.log(category, e.value);
               if (category !== e.value) {
                 newCategories = {
                   ...newCategories,
@@ -188,9 +189,9 @@ if (category) {
                 };
               }
             });
-            console.log("new categories", newCategories, "|", e.value, "|");
+            // console.log("new categories", newCategories, "|", e.value, "|");
             setCategories(newCategories);
-            console.log("new categories", newCategories, categories);
+            // console.log("new categories", newCategories, categories);
 
             // setFilterBoxAdditionalFilter({
             //   type: e.value.type,
@@ -273,6 +274,8 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, { getCat, loadOneMoreFilter })(
-  AdditionalFilter
-);
+export default connect(mapStateToProps, {
+  getCat,
+  loadOneMoreFilter,
+  selectCategory
+})(AdditionalFilter);

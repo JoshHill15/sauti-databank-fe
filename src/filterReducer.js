@@ -1,3 +1,5 @@
+import { selectCategory } from "./filterActions";
+
 // import { loadOneMoreFilter } from "./filterActions";
 
 export const loadOneMoreFilterReducer = (state, action) => {
@@ -8,6 +10,21 @@ export const loadOneMoreFilterReducer = (state, action) => {
       filters: {
         ...state.catTree.filters,
         [Object.keys(state.catTree.filters).length]: { selectedName: "" }
+      }
+    }
+  };
+};
+
+export const selectCategoryReducer = (state, action) => {
+  console.log("new selection", action.payload);
+  console.log(state.catTree.filters);
+  return {
+    ...state,
+    catTree: {
+      ...state.catTree,
+      filters: {
+        ...state.catTree.filters,
+        [action.payload["i"]]: { selectedName: action.payload["category"] }
       }
     }
   };
@@ -73,13 +90,18 @@ export const Cat = {
       next: { "0": {} },
       children: { "0": { char: "0" } },
       functions: { "0": loadOneMoreFilterReducer }
+    },
+    SELECT_CATEGORY: {
+      next: { "0": {} },
+      children: { "0": { char: "0" } },
+      functions: { "0": selectCategoryReducer }
     }
   },
   array: ["0", "1", "2", "3", "4"],
   filters: {
-    0: { selectedName: "0" }, // all the options
-    1: { selectedName: "1" },
-    2: { selectedName: "2" }
+    0: { selectedName: "" }, // all the options
+    1: { selectedName: "" },
+    2: { selectedName: "" }
   }
   // props.array.filter(option => props.filters[i].selectedName !== option)
   // props.array.filter(option => !(Object.keys(props.filters).map(filterId =>
