@@ -4,7 +4,12 @@ import Dropdown from "react-dropdown";
 import styled from "styled-components";
 import { connect } from "react-redux";
 
-import { getCat, loadOneMoreFilter, selectCategory } from "../filterActions";
+import {
+  getCat,
+  loadOneMoreFilter,
+  selectCategory,
+  selectOption
+} from "../filterActions";
 
 const CheckboxContainer = styled.div`
   max-height: 40vh;
@@ -122,11 +127,11 @@ if (category) {
   // each filter maps to an id
   //   each id maps to the data being held for that filter
   //
-  console.log("entering component", selectedNames);
-  console.log(categories);
-  const [showNames, setShowNames] = useState(Object.keys(categories));
-  console.log(showNames);
-  const [selectedName, setSelectedName] = useState("");
+  //   console.log("entering component", selectedNames);
+  //   console.log(categories);
+  //   const [showNames, setShowNames] = useState(Object.keys(categories));
+  //   console.log(showNames);
+  //   const [selectedName, setSelectedName] = useState("");
   return (
     // <>
     <div>
@@ -168,29 +173,29 @@ if (category) {
           }
           placeholder="Select a filter..."
           onChange={e => {
-            console.log(
-              "event",
-              e,
-              showNames.filter(name => name !== e.value)
-            );
+            // console.log(
+            //   "event",
+            //   e,
+            //   showNames.filter(name => name !== e.value)
+            // );
             // props.getCat(i);
             props.selectCategory(e.value, i);
-            setSelectedName(e.value);
-            setSelectedNames([...selectedNames, e.value]);
+            // setSelectedName(e.value);
+            // setSelectedNames([...selectedNames, e.value]);
 
-            // the value isn't changed for this round
-            let newCategories = {};
-            Object.keys(categories).forEach(category => {
-              //   console.log(category, e.value);
-              if (category !== e.value) {
-                newCategories = {
-                  ...newCategories,
-                  [category]: categories[category]
-                };
-              }
-            });
-            // console.log("new categories", newCategories, "|", e.value, "|");
-            setCategories(newCategories);
+            // // the value isn't changed for this round
+            // let newCategories = {};
+            // Object.keys(categories).forEach(category => {
+            //   //   console.log(category, e.value);
+            //   if (category !== e.value) {
+            //     newCategories = {
+            //       ...newCategories,
+            //       [category]: categories[category]
+            //     };
+            //   }
+            // });
+            // // console.log("new categories", newCategories, "|", e.value, "|");
+            // setCategories(newCategories);
             // console.log("new categories", newCategories, categories);
 
             // setFilterBoxAdditionalFilter({
@@ -207,9 +212,8 @@ if (category) {
         <div
           className="reset-btn"
           onClick={() => {
-            console.log(selectedName);
-
-            setSelectedName("");
+            // console.log(selectedName);
+            // setSelectedName("");
             // setFilterBoxAdditionalFilter({ type: "", query: "" });
             // setFilterBoxAdditionalFilterLabel("");
             // setAdditionalFilter({ type: "", query: "" });
@@ -224,7 +228,37 @@ if (category) {
 
         <CheckboxContainer>
           <p>Select an option to further filter the data: </p>
-          {}
+          {Object.keys(props.categoriesToPickFrom).includes(
+            props.filters[i].selectedName
+          )
+            ? props.categoriesToPickFrom[
+                props.filters[i].selectedName
+              ].options.map(option => (
+                <Options key={option}>
+                  <input
+                    type="checkBox"
+                    name="CrossFilter"
+                    value={option}
+                    onChange={e => {
+                      console.log("event", e);
+                      props.selectOption(
+                        props.filters[i].selectedName,
+                        option,
+                        i
+                      );
+
+                      // setSelectedCheckbox({
+                      //   // if this is a string then we could do this?
+                      //   // [ filterBoxAdditionalFilter.type ]
+                      //   [`${filterBoxAdditionalFilter.type}`]: option
+                      // }),
+                      // setAdditionalFilter(filterBoxAdditionalFilter)
+                    }}
+                  />
+                  <FilterOption>{option}</FilterOption>
+                </Options>
+              ))
+            : []}
         </CheckboxContainer>
         {/* {graphLabels[`${filterBoxAdditionalFilter.type}`] && (
           <CheckboxContainer>
@@ -254,7 +288,7 @@ if (category) {
       </form>
       <div
         onClick={e => {
-          console.log();
+          console.log(props.filters);
         }}
       >
         check status of redux
@@ -270,12 +304,14 @@ const mapStateToProps = state => {
     isFetching: state.catTree.isFetching,
     cat: state.catTree.cat,
     array: state.catTree.array,
-    filters: state.catTree.filters
+    filters: state.catTree.filters,
+    categoriesToPickFrom: state.catTree.categoriesToPickFrom
   };
 };
 
 export default connect(mapStateToProps, {
   getCat,
   loadOneMoreFilter,
-  selectCategory
+  selectCategory,
+  selectOption
 })(AdditionalFilter);

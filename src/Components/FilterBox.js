@@ -269,118 +269,6 @@ function FilterBox(props) {
       >
         add an additional filter
       </div>
-      {/* <AdditionalFilter
-        FilterBoxOptions={FilterBoxOptions}
-        filterBoxAdditionalFilter={filterBoxAdditionalFilter}
-        setFilterBoxAdditionalFilter={setFilterBoxAdditionalFilter}
-        filterBoxAdditionalFilterLabel={filterBoxAdditionalFilterLabel}
-        setFilterBoxAdditionalFilterLabel={setFilterBoxAdditionalFilterLabel}
-        filterBoxIndexLabel={filterBoxIndexLabel}
-        filterBoxCrossLabel={filterBoxCrossLabel}
-        graphLabels={graphLabels}
-        loading={loading}
-        setAdditionalFilter={props.setAdditionalFilter}
-        setCheckboxOptions={props.setCheckboxOptions}
-        setSelectedCheckbox={props.setSelectedCheckbox}
-        searchOptions={searchOptions}
-        setSearchOptions={setSearchOptions}
-        searchCategories={searchCategories}
-        setSearchCategories={setSearchCategories}
-        categories={categories}
-        setCategories={setCategories}
-        selectedNames={selectedNames}
-        setSelectedNames={setSelectedNames}
-        ithComponent={ithComponent}
-        setIthComponent={setIthComponent}
-      />
-      <AdditionalFilter
-        FilterBoxOptions={FilterBoxOptions}
-        filterBoxAdditionalFilter={filterBoxAdditionalFilter}
-        setFilterBoxAdditionalFilter={setFilterBoxAdditionalFilter}
-        filterBoxAdditionalFilterLabel={filterBoxAdditionalFilterLabel}
-        setFilterBoxAdditionalFilterLabel={setFilterBoxAdditionalFilterLabel}
-        filterBoxIndexLabel={filterBoxIndexLabel}
-        filterBoxCrossLabel={filterBoxCrossLabel}
-        graphLabels={graphLabels}
-        loading={loading}
-        setAdditionalFilter={props.setAdditionalFilter}
-        setCheckboxOptions={props.setCheckboxOptions}
-        setSelectedCheckbox={props.setSelectedCheckbox}
-        searchOptions={searchOptions}
-        setSearchOptions={setSearchOptions}
-        searchCategories={searchCategories}
-        setSearchCategories={setSearchCategories}
-        categories={categories}
-        setCategories={setCategories}
-
-        selectedNames={selectedNames}
-        setSelectedNames={setSelectedNames}
-        ithComponent={ithComponent}
-        setIthComponent={setIthComponent}
-      />
-      <AdditionalFilter
-        FilterBoxOptions={FilterBoxOptions}
-        filterBoxAdditionalFilter={filterBoxAdditionalFilter}
-        setFilterBoxAdditionalFilter={setFilterBoxAdditionalFilter}
-        filterBoxAdditionalFilterLabel={filterBoxAdditionalFilterLabel}
-        setFilterBoxAdditionalFilterLabel={setFilterBoxAdditionalFilterLabel}
-        filterBoxIndexLabel={filterBoxIndexLabel}
-        filterBoxCrossLabel={filterBoxCrossLabel}
-        graphLabels={graphLabels}
-        loading={loading}
-        setAdditionalFilter={props.setAdditionalFilter}
-        setCheckboxOptions={props.setCheckboxOptions}
-        setSelectedCheckbox={props.setSelectedCheckbox}
-        searchOptions={searchOptions}
-        setSearchOptions={setSearchOptions}
-        searchCategories={searchCategories}
-        setSearchCategories={setSearchCategories}
-        categories={categories}
-        setCategories={setCategories}
-
-        selectedNames={selectedNames}
-        setSelectedNames={setSelectedNames}
-        ithComponent={ithComponent}
-        setIthComponent={setIthComponent}
-      /> */}
-      {/* <AdditionalFilter
-        FilterBoxOptions={FilterBoxOptions}
-        filterBoxAdditionalFilter={filterBoxAdditionalFilter}
-        setFilterBoxAdditionalFilter={setFilterBoxAdditionalFilter}
-        filterBoxAdditionalFilterLabel={filterBoxAdditionalFilterLabel}
-        setFilterBoxAdditionalFilterLabel={setFilterBoxAdditionalFilterLabel}
-        filterBoxIndexLabel={filterBoxIndexLabel}
-        filterBoxCrossLabel={filterBoxCrossLabel}
-        graphLabels={graphLabels}
-        loading={loading}
-        setAdditionalFilter={props.setAdditionalFilter}
-        setCheckboxOptions={props.setCheckboxOptions}
-        setSelectedCheckbox={props.setSelectedCheckbox}
-        searchOptions={searchOptions}
-        setSearchOptions={setSearchOptions}
-        searchCategories={searchCategories}
-        setSearchCategories={setSearchCategories}
-      />
-      <AdditionalFilter
-        FilterBoxOptions={FilterBoxOptions}
-        filterBoxAdditionalFilter={filterBoxAdditionalFilter}
-        setFilterBoxAdditionalFilter={setFilterBoxAdditionalFilter}
-        filterBoxAdditionalFilterLabel={filterBoxAdditionalFilterLabel}
-        setFilterBoxAdditionalFilterLabel={setFilterBoxAdditionalFilterLabel}
-        filterBoxIndexLabel={filterBoxIndexLabel}
-        filterBoxCrossLabel={filterBoxCrossLabel}
-        graphLabels={graphLabels}
-        loading={loading}
-        setAdditionalFilter={props.setAdditionalFilter}
-        setCheckboxOptions={props.setCheckboxOptions}
-        setSelectedCheckbox={props.setSelectedCheckbox}
-        searchOptions={searchOptions}
-        setSearchOptions={setSearchOptions}
-        searchCategories={searchCategories}
-        setSearchCategories={setSearchCategories}
-      /> */}
-      {/* </> */}
-      {/* <> */}
       {/* <p>Additional Filter</p>
           <p className="disclosure">
             *This optional filter adjusts samplesize and may not always alter
@@ -422,8 +310,6 @@ function FilterBox(props) {
           >
             <p>Clear Additional Filter</p>
           </div> */}
-      {/* </> */}
-      {/* )} */}
 
       {/* {graphLabels[`${filterBoxAdditionalFilter.type}`] && (
           <CheckboxContainer>
@@ -709,7 +595,8 @@ const mapStateToProps = state => {
     isFetching: state.catTree.isFetching,
     cat: state.catTree.cat,
     array: state.catTree.array,
-    filters: state.catTree.filters
+    filters: state.catTree.filters,
+    categoriesToPickFrom: state.catTree.categoriesToPickFrom
   };
 };
 

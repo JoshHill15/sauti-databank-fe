@@ -56,3 +56,12 @@ export const selectCategory = (category, i) => dispatch => {
     payload: { category: category, i: i }
   });
 };
+
+export const selectOption = (category, option, i) => dispatch => {
+  console.log(category);
+
+  dispatch({
+    type: ["catTree", "SELECT_OPTION", "0"],
+    payload: { category: category, i: i, option: option }
+  });
+};
