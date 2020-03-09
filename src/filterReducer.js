@@ -69,6 +69,8 @@ const makeNewFilter = () => {
 const addToObject = (container, value) => {
   return { ...container, ...value };
 };
+
+// this function is for updating the state in a reducer in a cleaner way(no nesting the object spreading)
 const deepCopyAndUpdate = (state, path, value, cb) => {
   // this takes in a path as an array of keys(int, string)
   // and deep sets the array/dict at the end of the path at cb(state, values)
@@ -104,10 +106,7 @@ const deepCopyAndUpdate = (state, path, value, cb) => {
 };
 
 // import { loadOneMoreFilter } from "./filterActions";
-// if the filters are all selected and all are being used
-// shouldn't we be able to check
-// can only have n - 1 filters active out of n filters
-// it mght make sence to make a fake final filter so all n filters can be active
+// there is a single fake filter to allow the user to use all the real filters and change the filtering order
 export const loadOneMoreFilterReducer = (state, action) => {
   // console.log(
   //   Object.keys(state.sautiTree.filters).length,
@@ -140,16 +139,21 @@ export const loadOneMoreFilterReducer = (state, action) => {
   ) {
     console.log("add another filter");
     return deepCopyAndUpdate(
+      // the store
       state,
+      // the path to the object/array you indent to use as the base (baseObject.stuff)
       ["sautiTree", "filters"],
+      // what you intend to store at baseObject
       {
         [Object.keys(state.sautiTree.filters).length]: {
           selectedName: "",
           selectedOption: {}
         }
       },
+      // the function you use to store the object
       addToObject
     );
+    // equivalent to the below "regular" nested object spread
     // return {
     //   ...state,
     //   sautiTree: {
