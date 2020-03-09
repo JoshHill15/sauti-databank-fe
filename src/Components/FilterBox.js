@@ -10,8 +10,10 @@ import Loader from "react-loader-spinner";
 import AdditionalFilter from "./AdditionalFilter";
 import CalendarModal from "../dashboard/CalendarModal";
 import { connect } from "react-redux";
+import { useQuery } from "@apollo/react-hooks";
+import { gql } from "apollo-boost";
 
-import { getCat, loadOneMoreFilter } from "../filterActions";
+import { getCat, loadOneMoreFilter, submitFilter } from "../filterActions";
 
 import { decodeToken, getToken } from "../dashboard/auth/Auth";
 
@@ -139,7 +141,7 @@ function FilterBox(props) {
 
   const [selectedNames, setSelectedNames] = useState([]);
   const [ithComponent, setIthComponent] = useState(0);
-  const [reloadFilters, setReloadFilters] = useState(false);
+  const [reloadFilters, setReloadFilters] = useState(true);
   // const [additionalFilters, setAdditionalFilters] = useState(
   //   [null, null, null].map((slot, i) => {
   //     return (
@@ -171,22 +173,22 @@ function FilterBox(props) {
   //     );
   //   })
   // );
-  useEffect(() => {
-    if (
-      !graphLabels[`${filterBoxAdditionalFilter.type}`] &&
-      filterBoxAdditionalFilter.type
-    ) {
-      handleAuto();
-      setLoading(true);
-    }
-    /* eslint-disable */
-  }, [filterBoxAdditionalFilter.type]);
+  // useEffect(() => {
+  //   if (
+  //     !graphLabels[`${filterBoxAdditionalFilter.type}`] &&
+  //     filterBoxAdditionalFilter.type
+  //   ) {
+  //     handleAuto();
+  //     setLoading(true);
+  //   }
+  //   /* eslint-disable */
+  // }, [filterBoxAdditionalFilter.type]);
 
-  useEffect(() => {
-    if (props.checkboxOptions.length) {
-      setLoading(false);
-    }
-  }, [props.checkboxOptions]);
+  // useEffect(() => {
+  //   if (props.checkboxOptions.length) {
+  //     setLoading(false);
+  //   }
+  // }, [props.checkboxOptions]);
 
   const ClickTracker = index => {
     ReactGa.event({
@@ -194,7 +196,39 @@ function FilterBox(props) {
       action: `Clicked a Filter Option: ${index}`
     });
   };
-
+  // we can add more columns so entire table is fetched
+  let QUERY = gql`
+    query sessions3 {
+      sessionsData {
+        id
+        gender
+        country_of_residence
+        commodityproduct
+        education
+        produce
+        primary_income
+        language
+        procedurecommodity
+        proceduredest
+        created_date
+        procedurerequireddocument
+        procedurerelevantagency
+        procedureorigin
+        commoditycountry
+        commoditymarket
+        commoditycat
+        exchangedirection
+      }
+    }
+  `;
+  let { loading2, data } = useQuery(
+    QUERY
+    // , {
+    // variables: { ...props.selectedCheckbox },
+    // fetchPolicy: policyType
+    //   }
+  );
+  // console.log(loading2, loading, data)
   return (
     <DropdownContainer>
       {/* <p>Choose Category</p>
@@ -269,6 +303,18 @@ function FilterBox(props) {
       >
         add an additional filter
       </div>
+      {/* I wish the button could tell the user when it is enabled  */}
+      <div className="btn-container">
+        <Button
+          className="checkbox-submit-btn"
+          type="submit"
+          disabled={data === undefined}
+          onClick={() => props.submitFilter(data)}
+          style={{ cursor: loading ? "auto" : "pointer" }}
+        >
+          Submit Filter
+        </Button>
+      </div>
       {/* <p>Additional Filter</p>
           <p className="disclosure">
             *This optional filter adjusts samplesize and may not always alter
@@ -335,7 +381,7 @@ function FilterBox(props) {
           </CheckboxContainer>
         )} */}
       <form>
-        {loading ? (
+        {/* {loading ? (
           <Loader
             className="options-loader"
             type="Oval"
@@ -368,7 +414,7 @@ function FilterBox(props) {
               </CheckboxContainer>
             </>
           )
-        )}
+        )} */}
 
         {tier === "ADMIN" || tier === "PAID" || tier === "GOV_ROLE" ? (
           <DateContainer>
@@ -600,6 +646,8 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, { getCat, loadOneMoreFilter })(
-  FilterBox
-);
+export default connect(mapStateToProps, {
+  getCat,
+  loadOneMoreFilter,
+  submitFilter
+})(FilterBox);

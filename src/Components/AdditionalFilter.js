@@ -146,7 +146,7 @@ if (category) {
           controlClassName="myControlClassName"
           arrowClassName="myArrowClassName"
           className="dropdown"
-          disabled={loading}
+          //   disabled={loading}
           options={
             props.array.filter(
               option =>
@@ -240,7 +240,7 @@ if (category) {
                     name="CrossFilter"
                     value={option}
                     onChange={e => {
-                      console.log("event", e);
+                      //   console.log("event", e);
                       props.selectOption(
                         props.filters[i].selectedName,
                         option,
@@ -289,6 +289,8 @@ if (category) {
       <div
         onClick={e => {
           console.log(props.filters);
+          console.log(props.results);
+          console.log(props.searched);
         }}
       >
         check status of redux

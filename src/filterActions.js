@@ -65,3 +65,16 @@ export const selectOption = (category, option, i) => dispatch => {
     payload: { category: category, i: i, option: option }
   });
 };
+
+export const submitFilter = dataFromGraphQl => dispatch => {
+  // We are assuming the data came in before they hit submit
+  // console.log("we are here")
+  if (dataFromGraphQl !== undefined) {
+    // console.log("about to submit from graphql", dataFromGraphQl)
+    // run dispatch
+    dispatch({
+      type: ["catTree", "SUBMIT_FILTER", "0"],
+      payload: { dataFromGraphQl: dataFromGraphQl }
+    });
+  }
+};
