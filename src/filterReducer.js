@@ -39,11 +39,13 @@ const categories = {
   // }
   // I don't know if the searchName is the proper column, but there is data to search for there
   Commodities: {
-    // should set it up so they can only pick "All" or another one
+    // should set it up so they can only pick "All" or any of the other 3 options
     options: ["All", "Dry Maize", "Eggs", "Nile Perch"],
     searchName: "commodityproduct"
   }
 };
+// there is definitely some extra stuff here I don't use as the store object went through some changes
+// during the developement of the solution
 // these 2 functions came from a prior project
 // generic formula for updating nested state in redux
 // the selection system is slow in debug mode but fast in regular mode
@@ -70,7 +72,7 @@ const addToObject = (container, value) => {
 };
 const deepCopyAndUpdate = (state, path, value, cb) => {
   // this takes in a path as an array of keys(int, string)
-  // and deep sets the array/dict at the end of the path ot cb(state, values)
+  // and deep sets the array/dict at the end of the path at cb(state, values)
   // state is an object
   // console.log("deep copy", path, state)
   // console.log("path", path)
@@ -351,6 +353,9 @@ const filterThroughTable = (table, categories, listsOfOptions) => {
   return filteredTable;
   // console.log(filteredTable)
 };
+// const getOptions = (optionsObject) => {
+//   return Object.keys()
+// }
 export const submitFilterReducer = (state, action) => {
   // collect the query data from the filters
   // console.log("data from table", action.payload.dataFromGraphQl)
