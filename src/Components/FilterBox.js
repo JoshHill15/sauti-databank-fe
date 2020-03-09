@@ -13,7 +13,7 @@ import { connect } from "react-redux";
 import { useQuery } from "@apollo/react-hooks";
 import { gql } from "apollo-boost";
 
-import { getCat, loadOneMoreFilter, submitFilter } from "../filterActions";
+import { loadOneMoreFilter, submitFilter } from "../filterActions";
 
 import { decodeToken, getToken } from "../dashboard/auth/Auth";
 
@@ -637,17 +637,13 @@ const DropdownContainer = styled.div`
 
 const mapStateToProps = state => {
   return {
-    error: state.catTree.error,
-    isFetching: state.catTree.isFetching,
-    cat: state.catTree.cat,
-    array: state.catTree.array,
-    filters: state.catTree.filters,
-    categoriesToPickFrom: state.catTree.categoriesToPickFrom
+    array: state.sautiTree.array,
+    filters: state.sautiTree.filters,
+    categoriesToPickFrom: state.sautiTree.categoriesToPickFrom
   };
 };
 
 export default connect(mapStateToProps, {
-  getCat,
   loadOneMoreFilter,
   submitFilter
 })(FilterBox);

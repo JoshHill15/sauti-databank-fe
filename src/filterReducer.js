@@ -1,4 +1,3 @@
-import { selectCategory } from "./filterActions";
 const categories = {
   "Education Level": {
     options: [
@@ -111,40 +110,40 @@ const deepCopyAndUpdate = (state, path, value, cb) => {
 // it mght make sence to make a fake final filter so all n filters can be active
 export const loadOneMoreFilterReducer = (state, action) => {
   // console.log(
-  //   Object.keys(state.catTree.filters).length,
-  //   state.catTree.array.length
+  //   Object.keys(state.sautiTree.filters).length,
+  //   state.sautiTree.array.length
   // );
-  // if(state.catTree.searched) {
+  // if(state.sautiTree.searched) {
   //   return deepCopyAndUpdate(
   //     state,
   //     [
-  //       "catTree",
+  //       "sautiTree",
   //       "filters"
   //     ],
-  //     state.catTree.filters,
+  //     state.sautiTree.filters,
   //     spreadObject
   //   );
   //   // return {
   //   //   ...state,
-  //   //   catTree: {
-  //   //     ...state.catTree,
+  //   //   sautiTree: {
+  //   //     ...state.sautiTree,
   //   //     filters: {
-  //   //             ...state.catTree.filters
+  //   //             ...state.sautiTree.filters
   //   //           }
   //   //   }
   //   // };
   // }
   // if there is room to make another filter then add it else return the same set
   if (
-    Object.keys(state.catTree.filters).length <
-    state.catTree.array.length - 1
+    Object.keys(state.sautiTree.filters).length <
+    state.sautiTree.array.length - 1
   ) {
     console.log("add another filter");
     return deepCopyAndUpdate(
       state,
-      ["catTree", "filters"],
+      ["sautiTree", "filters"],
       {
-        [Object.keys(state.catTree.filters).length]: {
+        [Object.keys(state.sautiTree.filters).length]: {
           selectedName: "",
           selectedOption: {}
         }
@@ -153,11 +152,11 @@ export const loadOneMoreFilterReducer = (state, action) => {
     );
     // return {
     //   ...state,
-    //   catTree: {
-    //     ...state.catTree,
+    //   sautiTree: {
+    //     ...state.sautiTree,
     //     filters: {
-    //             ...state.catTree.filters,
-    //             [Object.keys(state.catTree.filters).length]: {
+    //             ...state.sautiTree.filters,
+    //             [Object.keys(state.sautiTree.filters).length]: {
     //               selectedName: "",
     //               selectedOption: {}
     //             }
@@ -168,36 +167,36 @@ export const loadOneMoreFilterReducer = (state, action) => {
   } else {
     return deepCopyAndUpdate(
       state,
-      ["catTree", "filters"],
-      state.catTree.filters,
+      ["sautiTree", "filters"],
+      state.sautiTree.filters,
       spreadObject
     );
     // return {
     //   ...state,
-    //   catTree: {
-    //     ...state.catTree,
+    //   sautiTree: {
+    //     ...state.sautiTree,
     //     filters: {
-    //             ...state.catTree.filters
+    //             ...state.sautiTree.filters
     //           }
     //   }
     // };
   }
   // return {
   //   ...state,
-  //   catTree: {
-  //     ...state.catTree,
+  //   sautiTree: {
+  //     ...state.sautiTree,
   //     filters:
-  //       Object.keys(state.catTree.filters).length <
-  //       state.catTree.array.length - 1
+  //       Object.keys(state.sautiTree.filters).length <
+  //       state.sautiTree.array.length - 1
   //         ? {
-  //             ...state.catTree.filters,
-  //             [Object.keys(state.catTree.filters).length]: {
+  //             ...state.sautiTree.filters,
+  //             [Object.keys(state.sautiTree.filters).length]: {
   //               selectedName: "",
   //               selectedOption: {}
   //             }
   //           }
   //         : {
-  //             ...state.catTree.filters
+  //             ...state.sautiTree.filters
   //           }
   //   }
   // };
@@ -205,42 +204,42 @@ export const loadOneMoreFilterReducer = (state, action) => {
 
 export const selectCategoryReducer = (state, action) => {
   //   console.log("new selection", action.payload);
-  //   console.log(state.catTree.filters);
+  //   console.log(state.sautiTree.filters);
   // assume they start unchecked
   let options = {};
   if (
-    Object.keys(state.catTree.categoriesToPickFrom).includes(
+    Object.keys(state.sautiTree.categoriesToPickFrom).includes(
       action.payload.category
     )
   ) {
-    state.catTree.categoriesToPickFrom[action.payload.category].options.forEach(
-      option => {
-        options = {
-          ...options,
-          [option]: false
-        };
-      }
-    );
+    state.sautiTree.categoriesToPickFrom[
+      action.payload.category
+    ].options.forEach(option => {
+      options = {
+        ...options,
+        [option]: false
+      };
+    });
   }
   const i = String(action.payload.i);
   let x = deepCopyAndUpdate(
     state,
-    ["catTree", "filters", i, "selectedName"],
+    ["sautiTree", "filters", i, "selectedName"],
     action.payload.category,
     setToValue
   );
   return deepCopyAndUpdate(
     x,
-    ["catTree", "filters", i, "selectedOption"],
+    ["sautiTree", "filters", i, "selectedOption"],
     options,
     spreadObject
   );
   //   return {
   //     ...state,
-  //     catTree: {
-  //       ...state.catTree,
+  //     sautiTree: {
+  //       ...state.sautiTree,
   //       filters: {
-  //         ...state.catTree.filters,
+  //         ...state.sautiTree.filters,
   //         [action.payload.i]: {
   // the set to value one
   //             selectedName: action.payload.category,
@@ -255,21 +254,21 @@ export const selectCategoryReducer = (state, action) => {
 };
 const flipSign = (state, action) => {
   // console.log()
-  return !state.catTree.filters[action.payload.i].selectedOption[
+  return !state.sautiTree.filters[action.payload.i].selectedOption[
     action.payload.option
   ];
 };
 export const selectOptionReducer = (state, action) => {
   // console.log("new option", action.payload);
-  // console.log(state.catTree.filters);
+  // console.log(state.sautiTree.filters);
 
   // each time this is called, flip the sign to uncheck or check the option being selected
-  // state["catTree"]["filters"][action.payload.i]["selectedOption"][action.payload.i]
+  // state["sautiTree"]["filters"][action.payload.i]["selectedOption"][action.payload.i]
   // console.log(action.payload)
   return deepCopyAndUpdate(
     state,
     [
-      "catTree",
+      "sautiTree",
       "filters",
       String(action.payload.i),
       "selectedOption",
@@ -359,38 +358,40 @@ const filterThroughTable = (table, categories, listsOfOptions) => {
 export const submitFilterReducer = (state, action) => {
   // collect the query data from the filters
   // console.log("data from table", action.payload.dataFromGraphQl)
-  // console.log('get filter query from here', state.catTree.filters)
+  // console.log('get filter query from here', state.sautiTree.filters)
   // makes sure only categories that are selected and have at least ne selected option be recorded
 
-  const andFunction = Object.keys(state.catTree.filters)
+  const andFunction = Object.keys(state.sautiTree.filters)
     .map(filterId => {
-      if (state.catTree.filters[filterId].selectedName.length > 0) {
+      if (state.sautiTree.filters[filterId].selectedName.length > 0) {
         // make sure all the options are selected before collecting a category
         let options = Object.keys(
-          state.catTree.filters[filterId].selectedOption
+          state.sautiTree.filters[filterId].selectedOption
         )
           .map(option => {
             if (
-              state.catTree.filters[filterId].selectedOption[option] === true
+              state.sautiTree.filters[filterId].selectedOption[option] === true
             ) {
               return option;
             }
           })
           .filter(option => option !== undefined);
         if (options.length > 0) {
-          return categories[state.catTree.filters[filterId].selectedName]
+          return categories[state.sautiTree.filters[filterId].selectedName]
             .searchName;
         }
       }
     })
     .filter(selectedName => selectedName !== undefined);
   console.log(andFunction);
-  const orFunction = Object.keys(state.catTree.filters)
+  const orFunction = Object.keys(state.sautiTree.filters)
     .map(filterId => {
       // uses same logic for filters as before
-      return Object.keys(state.catTree.filters[filterId].selectedOption)
+      return Object.keys(state.sautiTree.filters[filterId].selectedOption)
         .map(option => {
-          if (state.catTree.filters[filterId].selectedOption[option] === true) {
+          if (
+            state.sautiTree.filters[filterId].selectedOption[option] === true
+          ) {
             return option;
           }
         })
@@ -413,23 +414,23 @@ export const submitFilterReducer = (state, action) => {
   // can't save it cause setting leaves it undefined, spreadding it results in an error(can't spread an object into an array)
   let x = deepCopyAndUpdate(
     state,
-    ["catTree", "results"],
+    ["sautiTree", "results"],
     results,
     copyArrayOfObjects
   );
-  return deepCopyAndUpdate(x, ["catTree", "searched"], 1, setToValue);
+  return deepCopyAndUpdate(x, ["sautiTree", "searched"], 1, setToValue);
   // run the js on the tables and query data
   // save the resulting table in state
 };
 export const fetchCatStart = (state, action) => {
-  return { ...state, catTree: { ...state.catTree, isFetching: true } };
+  return { ...state, sautiTree: { ...state.sautiTree, isFetching: true } };
 };
 
 export const fetchCatSuccess = (state, action) => {
   return {
     ...state,
-    catTree: {
-      ...state.catTree,
+    sautiTree: {
+      ...state.sautiTree,
       error: "",
       isFetching: false,
       cat: action.payload
@@ -439,8 +440,8 @@ export const fetchCatSuccess = (state, action) => {
 export const fetchCatFailure = (state, action) => {
   return {
     ...state,
-    catTree: {
-      ...state.catTree,
+    sautiTree: {
+      ...state.sautiTree,
       error: action.payload,
       cat: null,
       isFetching: false

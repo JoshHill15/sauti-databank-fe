@@ -5,7 +5,6 @@ import styled from "styled-components";
 import { connect } from "react-redux";
 
 import {
-  getCat,
   loadOneMoreFilter,
   selectCategory,
   selectOption
@@ -148,10 +147,12 @@ if (category) {
           className="dropdown"
           //   disabled={loading}
           options={
-            props.array.filter(
+            props.sautiTree.array.filter(
               option =>
-                !Object.keys(props.filters)
-                  .map(filterId => props.filters[filterId].selectedName)
+                !Object.keys(props.sautiTree.filters)
+                  .map(
+                    filterId => props.sautiTree.filters[filterId].selectedName
+                  )
                   .includes(option)
             )
             //   props.array.filter(option => props.filters[i].selectedName !== option)
@@ -167,7 +168,7 @@ if (category) {
             //   )
           }
           value={
-            props.filters[i].selectedName
+            props.sautiTree.filters[i].selectedName
             // selectedName
             //   filterBoxAdditionalFilterLabel
           }
@@ -228,11 +229,11 @@ if (category) {
 
         <CheckboxContainer>
           <p>Select an option to further filter the data: </p>
-          {Object.keys(props.categoriesToPickFrom).includes(
-            props.filters[i].selectedName
+          {Object.keys(props.sautiTree.categoriesToPickFrom).includes(
+            props.sautiTree.filters[i].selectedName
           )
-            ? props.categoriesToPickFrom[
-                props.filters[i].selectedName
+            ? props.sautiTree.categoriesToPickFrom[
+                props.sautiTree.filters[i].selectedName
               ].options.map(option => (
                 <Options key={option}>
                   <input
@@ -242,7 +243,7 @@ if (category) {
                     onChange={e => {
                       //   console.log("event", e);
                       props.selectOption(
-                        props.filters[i].selectedName,
+                        props.sautiTree.filters[i].selectedName,
                         option,
                         i
                       );
@@ -288,7 +289,7 @@ if (category) {
       </form>
       <div
         onClick={e => {
-          console.log(props.filters);
+          console.log(props.sautiTree.filters);
           console.log(props.results);
           console.log(props.searched);
         }}
@@ -302,17 +303,11 @@ if (category) {
 // export default AdditionalFilter;
 const mapStateToProps = state => {
   return {
-    error: state.catTree.error,
-    isFetching: state.catTree.isFetching,
-    cat: state.catTree.cat,
-    array: state.catTree.array,
-    filters: state.catTree.filters,
-    categoriesToPickFrom: state.catTree.categoriesToPickFrom
+    sautiTree: state.sautiTree
   };
 };
 
 export default connect(mapStateToProps, {
-  getCat,
   loadOneMoreFilter,
   selectCategory,
   selectOption

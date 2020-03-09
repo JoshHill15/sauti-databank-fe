@@ -1,8 +1,9 @@
 // import { Cat } from './solutions/cat/catReducer'
 // import { BreakApp } from './reducers/breakAppReducer'
+// Cat was remenant of the project this was migrated from
 import { Cat } from "./filterReducer";
 const initialState = {
-  catTree: Cat
+  sautiTree: Cat
   // breakAppTree: BreakApp
 };
 
