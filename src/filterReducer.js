@@ -72,6 +72,20 @@ const addToObject = (container, value) => {
 
 // this function is for updating the state in a reducer in a cleaner way(no nesting the object spreading)
 const deepCopyAndUpdate = (state, path, value, cb) => {
+  // little explanation for how recursion works
+  // recursion could be thougt as a loop
+  // as you loop through the path elements, you have to find out if the path is done
+  // or there is more to do and weather the path is valid
+  // when the path is done all the separate parts across the loop are returned
+  // quick example of a recursive function so how the different subprobems are made and combined
+  // lets say f(a, b) =
+  // if(a <= 3)
+  // return f(a + 1, b + 1) + 5
+  // else return a + b
+  // f(1, 2) = f(2, f(3, f(4, 5) + 5)) = f(2, f(3, 9 + 5)) = f(2, 3 + 9 + 5) = 2 + 3 + 9 + 5 = 19
+  // where the result of the previous function is combined with the caller to form a
+  // solution to the general problem
+
   // this takes in a path as an array of keys(int, string)
   // and deep sets the array/dict at the end of the path at cb(state, values)
   // state is an object
@@ -226,6 +240,7 @@ export const selectCategoryReducer = (state, action) => {
     });
   }
   const i = String(action.payload.i);
+  // 2 things are getting stored in different locations so we have to run this 2 times
   let x = deepCopyAndUpdate(
     state,
     ["sautiTree", "filters", i, "selectedName"],
@@ -356,9 +371,16 @@ const filterThroughTable = (table, categories, listsOfOptions) => {
   return filteredTable;
   // console.log(filteredTable)
 };
-// const getOptions = (optionsObject) => {
-//   return Object.keys()
-// }
+// new function, untested
+const getOptions = optionsObject => {
+  return Object.keys(optionsObject)
+    .map(option => {
+      if (optionsObject[option] === true) {
+        return option;
+      }
+    })
+    .filter(option => option !== undefined);
+};
 export const submitFilterReducer = (state, action) => {
   // collect the query data from the filters
   // console.log("data from table", action.payload.dataFromGraphQl)
@@ -507,6 +529,7 @@ export const Cat = {
   // the mapping from id to data for each filter is replicated inside selectedOption
   // using a generator to make the keys(each selectable option)
   filters: {
+    // rename to selectedOptions
     0: { selectedName: "", selectedOption: {} }, // all the options
 
     1: { selectedName: "", selectedOption: {} },
