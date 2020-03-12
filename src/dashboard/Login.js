@@ -100,9 +100,16 @@ export default function SignInSide(props) {
       <Grid item xs={false} sm={4} md={7} className={classes.image} />
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
         <div className={classes.paper}>
-          <Typography component="h1" variant="h5">
-            <FormTitle>Login</FormTitle>
-          </Typography>
+          <TitleContainer>
+            <UnusedTitle component="h1" variant="h5">
+              <FormTitle>
+                <UnusedTitleLink to="/">Sign Up</UnusedTitleLink>
+              </FormTitle>
+            </UnusedTitle>
+            <CurrentTitle component="h1" variant="h5">
+              <FormTitle>Login</FormTitle>
+            </CurrentTitle>
+          </TitleContainer>
           <form
             className={classes.form}
             noValidate
@@ -242,4 +249,20 @@ const FormBottomText = styled.p`
 `;
 const FormTitle = styled.h1`
   font-size: 3rem;
+  margin: 0 3rem;
+`;
+const TitleContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+const CurrentTitle = styled.span`
+  text-decoration: underline;
+`;
+const UnusedTitle = styled.span`
+  opacity: 0.5;
+`;
+const UnusedTitleLink = styled(Link)`
+  text-decoration: none;
+  color: black;
+  font-size: 1.6rem;
 `;

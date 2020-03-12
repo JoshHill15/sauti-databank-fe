@@ -142,9 +142,16 @@ export default function SignInSide(props) {
       <Grid item xs={false} sm={4} md={7} className={classes.image} />
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
         <div className={classes.paper}>
-          <Typography component="h1" variant="h5">
-            <FormTitle>Sign Up</FormTitle>
-          </Typography>
+          <TitleContainer>
+            <CurrentTitle component="h1" variant="h5">
+              <FormTitle>Sign Up</FormTitle>
+            </CurrentTitle>
+            <UnusedTitle component="h1" variant="h5">
+              <FormTitle>
+                <UnusedTitleLink to="/login">Login</UnusedTitleLink>
+              </FormTitle>
+            </UnusedTitle>
+          </TitleContainer>
           <form
             className={classes.form}
             noValidate
@@ -358,9 +365,25 @@ const Styles = withStyles(theme => ({
 const FormBottomText = styled.p`
   font-size: 1.4rem;
 `;
+const TitleContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
 const FormTitle = styled.h1`
   font-size: 3rem;
+  margin: 0 3rem;
+`;
+const CurrentTitle = styled.span`
+  text-decoration: underline;
+`;
+const UnusedTitle = styled.span`
+  opacity: 0.5;
 `;
 const RequiredLabel = styled.label`
   font-size: 1.4rem;
+`;
+const UnusedTitleLink = styled(Link)`
+  text-decoration: none;
+  color: black;
+  font-size: 1.6rem;
 `;

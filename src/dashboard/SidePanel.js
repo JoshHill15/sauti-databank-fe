@@ -16,7 +16,7 @@ const useStyles = makeStyles({
 export default function SidePanel(props) {
   const classes = useStyles();
   const [state, setState] = React.useState({
-    right: true
+    right: false
   });
 
   const toggleDrawer = (side, open) => event => {
