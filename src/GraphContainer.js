@@ -4,10 +4,10 @@ import "./index.css";
 import ReactGa from "react-ga";
 import Navbar from "./Components/Navbar";
 import FilterBox from "./Components/FilterBox";
-import SidePanel from "./dashboard/SidePanel";
 import "react-dropdown/style.css";
 import { withRouter } from "react-router-dom";
 import Queries from "./Components/Queries2";
+import SidePanel from "./dashboard/SidePanel";
 
 const GraphContainer = () => {
   const [index, setIndex] = useState({
@@ -61,6 +61,29 @@ const GraphContainer = () => {
         <div className="header">
           <h1>Informal Cross-Border Trade Data</h1>
         </div>
+        <div className="dropdown-container">
+          <SidePanel
+            onChange={onChange}
+            onSubmit={onSubmit}
+            index={index}
+            checkboxOptions={checkboxOptions}
+            crossFilter={crossFilter}
+            setIndex={setIndex}
+            setCrossFilter={setCrossFilter}
+            setIndexLabel={setIndexLabel}
+            setCrossLabel={setCrossLabel}
+            setSelectedCheckbox={setSelectedCheckbox}
+            setCheckboxOptions={setCheckboxOptions}
+            setAdditionalFilter={setAdditionalFilter}
+            startDate={startDate}
+            endDate={endDate}
+            setStartDate={setStartDate}
+            setEndDate={setEndDate}
+            setFirstSelectedCheckbox={setFirstSelectedCheckbox}
+            setSecondSelectedCheckbox={setSecondSelectedCheckbox}
+            secondCheckboxOptions={secondCheckboxOptions}
+          />
+        </div>
         <div className="content-container">
           <div className="chart-container">
             <Queries
@@ -77,29 +100,6 @@ const GraphContainer = () => {
               endDate={endDate}
               secondSelectedCheckbox={secondSelectedCheckbox}
               firstSelectedCheckbox={firstSelectedCheckbox}
-            />
-          </div>
-          <div className="dropdown-container">
-            <SidePanel
-              onChange={onChange}
-              onSubmit={onSubmit}
-              index={index}
-              checkboxOptions={checkboxOptions}
-              crossFilter={crossFilter}
-              setIndex={setIndex}
-              setCrossFilter={setCrossFilter}
-              setIndexLabel={setIndexLabel}
-              setCrossLabel={setCrossLabel}
-              setSelectedCheckbox={setSelectedCheckbox}
-              setCheckboxOptions={setCheckboxOptions}
-              setAdditionalFilter={setAdditionalFilter}
-              startDate={startDate}
-              endDate={endDate}
-              setStartDate={setStartDate}
-              setEndDate={setEndDate}
-              setFirstSelectedCheckbox={setFirstSelectedCheckbox}
-              setSecondSelectedCheckbox={setSecondSelectedCheckbox}
-              secondCheckboxOptions={secondCheckboxOptions}
             />
           </div>
         </div>
