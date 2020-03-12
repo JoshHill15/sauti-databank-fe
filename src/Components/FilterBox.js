@@ -516,8 +516,9 @@ const DropdownContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  width: 26.9rem;
-  p {
+  width: 40rem;
+  padding: 20px;
+  padding-top:50px p {
     font-size: 1.3rem;
     margin: 10px 0;
   }
