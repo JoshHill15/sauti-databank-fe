@@ -4,6 +4,7 @@ import "./index.css";
 import ReactGa from "react-ga";
 import Navbar from "./Components/Navbar";
 import FilterBox from "./Components/FilterBox";
+import SidePanel from "./dashboard/SidePanel";
 import "react-dropdown/style.css";
 import { withRouter } from "react-router-dom";
 import Queries from "./Components/Queries2";
@@ -79,7 +80,7 @@ const GraphContainer = () => {
             />
           </div>
           <div className="dropdown-container">
-            <FilterBox
+            <SidePanel
               onChange={onChange}
               onSubmit={onSubmit}
               index={index}
