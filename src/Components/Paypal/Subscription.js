@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useHistory } from "react-router-dom";
-import { decodeToken } from "../dashboard/auth/Auth";
+import { decodeToken } from "../../dashboard/auth/Auth";
 import { useMutation } from "@apollo/react-hooks";
 import swal from "sweetalert";
 import gql from "graphql-tag";
@@ -22,7 +22,7 @@ const UPDATE_USER_TIER = gql`
   }
 `;
 
-export default function PaypalButton() {
+export default function Subscription() {
   const [userUpdated, { loading, error }] = useMutation(UPDATE_USER_TIER);
   const history = useHistory();
 
@@ -48,7 +48,7 @@ export default function PaypalButton() {
 
           swal({
             title: "",
-            text: "You are now a premium user!",
+            text: "Your account has been upgraded to premium!",
             icon: "success"
           });
 

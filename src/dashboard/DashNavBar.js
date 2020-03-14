@@ -43,22 +43,22 @@ function DashNav() {
     tier = tier.tier;
   }
 
+  //   <ReactGA.OutboundLink
+  //   style={{ textDecoration: "none" }}
+  //   eventLabel="Outbound Link to http://sautiafrica.org/"
+  //   to="http://sautiafrica.org/"
+  // >
+  //   <SautiLogoText href="http://sautiafrica.org/">
+  //     <p>
+  //       Sauti<SautiDot>.</SautiDot>
+  //     </p>
+  //   </SautiLogoText>
+  // </ReactGA.OutboundLink>
+
   return (
     <>
       <TopBar>
-        <SautiLogo>
-          <ReactGA.OutboundLink
-            style={{ textDecoration: "none" }}
-            eventLabel="Outbound Link to http://sautiafrica.org/"
-            to="http://sautiafrica.org/"
-          >
-            <SautiLogoText href="http://sautiafrica.org/">
-              <p>
-                Sauti<SautiDot>.</SautiDot>
-              </p>
-            </SautiLogoText>
-          </ReactGA.OutboundLink>
-        </SautiLogo>
+        <SautiLogo></SautiLogo>
         <Navigation>
           {!SignedIn && <Links to="/">HOME</Links>}
           {SignedIn && <Links to="/">ACCOUNT</Links>}

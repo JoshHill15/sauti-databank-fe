@@ -2,7 +2,8 @@ import React, { useEffect } from "react";
 import { urlPageView } from "./GoogleAnalytics/index";
 import { useHistory } from "react-router-dom";
 import { getToken, decodeToken, getSubscription } from "./auth/Auth";
-import PaypalButton from "../Components/PaypalButton";
+import Subscription from "../Components/Paypal/Subscription";
+import OneTimePayment from "../Components/Paypal/OneTimePayment";
 import gql from "graphql-tag";
 import { useMutation, useQuery } from "@apollo/react-hooks";
 
@@ -32,7 +33,6 @@ function DashAccount(props) {
   useEffect(() => {
     urlPageView("/account");
   });
-
 
   const history = useHistory();
 
@@ -96,7 +96,6 @@ function DashAccount(props) {
         text: "Your subcription was successfully cancelled",
         icon: "success"
       });
-
     }
   };
 
@@ -197,7 +196,10 @@ function DashAccount(props) {
                       <li className="features-item">Filter data by date</li>
                     </ul>
                     <ButtonDiv>
-                      <PaypalButton />
+                      <Subscription />
+                    </ButtonDiv>
+                    <ButtonDiv>
+                      <OneTimePayment />
                     </ButtonDiv>
                   </UserTypeContainerDiv>
                 </Div2>

@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 
 export const initGA = trackingID => {
   ReactGA.initialize(trackingID, {
-    debug: true
+    debug: false
   });
 };
 
